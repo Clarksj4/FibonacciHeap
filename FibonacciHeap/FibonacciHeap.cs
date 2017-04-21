@@ -150,7 +150,10 @@ namespace FibonacciHeap
 
             // Add each child as a root tree, remove ref to parent
             foreach (HeapNode<TPriority, TItem> child in root.Value.Children)
-                MoveToRoot(child);
+            {
+                child.Parent = null;
+                Trees.AddFirst(child);
+            }
         }
 
         /// <summary>
@@ -158,21 +161,29 @@ namespace FibonacciHeap
         /// </summary>
         private void FindMinimum()
         {
-            // minimum = first tree in list
-            // walker through remaining nodes to see if there is a smaller one
-            minimumTreesNode = Trees.First;
-
-            // Walk through root element of each root tree
-            LinkedListNode<HeapNode<TPriority, TItem>> walker = Trees.First.Next;
-            while (walker != null)
+            // If there is atleast one node in heap
+            if (Trees.Count > 0)
             {
-                // Check if priority is less than current minimum, update minimum if so
-                if (walker.Value.Priority.CompareTo(minimumTreesNode.Value.Priority) < 0)
-                    minimumTreesNode = walker;
+                // minimum = first tree in list
+                // walker through remaining nodes to see if there is a smaller one
+                minimumTreesNode = Trees.First;
 
-                // Keep iterating
-                walker = walker.Next;
+                // Walk through root element of each root tree
+                LinkedListNode<HeapNode<TPriority, TItem>> walker = Trees.First.Next;
+                while (walker != null)
+                {
+                    // Check if priority is less than current minimum, update minimum if so
+                    if (walker.Value.Priority.CompareTo(minimumTreesNode.Value.Priority) < 0)
+                        minimumTreesNode = walker;
+
+                    // Keep iterating
+                    walker = walker.Next;
+                }
             }
+
+            // No nodes in heap, min is null
+            else
+                minimumTreesNode = null;
         }
 
         /// <summary>
@@ -180,30 +191,34 @@ namespace FibonacciHeap
         /// </summary>
         private void ConsolidateTrees()
         {
-            // Bucket index corresponds to the rank of the stored element
-            Bucket<LinkedListNode<HeapNode<TPriority, TItem>>> rankBucket = new Bucket<LinkedListNode<HeapNode<TPriority, TItem>>>();
-
-            // Iterate over each root tree
-            var walker = Trees.First;
-            while (walker != null)
+            // Need atleast 2 trees in order to consolidate
+            if (Trees.Count > 1)
             {
-                // Save ref to next root, because walker is going to be overwritten when there is a conflict
-                var next = walker.Next;
+                // Bucket index corresponds to the rank of the stored element
+                Bucket<LinkedListNode<HeapNode<TPriority, TItem>>> rankBucket = new Bucket<LinkedListNode<HeapNode<TPriority, TItem>>>();
 
-                // Are there root trees with the same rank?
-                int rank = walker.Value.Rank;
-                while (rankBucket[rank] != null)
+                // Iterate over each root tree
+                var walker = Trees.First;
+                while (walker != null)
                 {
+                    // Save ref to next root, because walker is going to be overwritten when there is a conflict
+                    var next = walker.Next;
 
-                    walker = Consolidate(walker, rankBucket[rank]);     // Consolidate trees with same rank (also get ref to merged tree)
-                    rankBucket[rank] = null;                            // Remove ref to root tree that was consolidated
-                    rank = walker.Value.Rank;                           // Update rank
+                    // Are there root trees with the same rank?
+                    int rank = walker.Value.Rank;
+                    while (rankBucket[rank] != null)
+                    {
+
+                        walker = Consolidate(walker, rankBucket[rank]);     // Consolidate trees with same rank (also get ref to merged tree)
+                        rankBucket[rank] = null;                            // Remove ref to root tree that was consolidated
+                        rank = walker.Value.Rank;                           // Update rank
+                    }
+
+                    // No conflicts, store in rank bucket
+                    rankBucket[rank] = walker;
+
+                    walker = next;
                 }
-
-                // No conflicts, store in rank bucket
-                rankBucket[rank] = walker;
-
-                walker = next;
             }
         }
 
