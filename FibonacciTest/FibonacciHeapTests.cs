@@ -107,10 +107,27 @@ namespace FibonacciHeap.Tests
             Assert.AreEqual(minimum, 'a');
             Assert.AreNotEqual(heap.Minimum.Value, minimum);
 
-            // Check minimum is correct, and contains correct values
+            // Check new minimum is correct, and contains correct values
             Assert.AreEqual(heap.Minimum, node2);
             Assert.AreEqual(heap.Minimum.Priority, 7);
             Assert.AreEqual(heap.Minimum.Value, 'b');
+
+            minimum = heap.Pop();
+
+            // Check returned item is the correct value, and is not still in heap
+            Assert.AreEqual(minimum, 'b');
+            Assert.AreNotEqual(heap.Minimum.Value, minimum);
+
+            minimum = heap.Pop();
+
+            // Check returned item is the correct value, and is not still in heap
+            Assert.AreEqual(minimum, 'c');
+            Assert.AreNotEqual(heap.Minimum.Value, minimum);
+
+            minimum = heap.Pop();
+
+            // Check returned item is the correct value
+            Assert.AreEqual(minimum, 'd');
         }
     }
 }
