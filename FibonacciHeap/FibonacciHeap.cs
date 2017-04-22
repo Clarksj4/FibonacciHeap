@@ -57,13 +57,13 @@ namespace FibonacciHeap
             // Add node as first item in root nodes
             HeapNode<TPriority, TItem> node = new HeapNode<TPriority, TItem>(priority, value);
             Trees.AddFirst(node);
-            Count++;
 
             // Update minimum
-            if (minimumTreesNode == null || 
-                node.Priority.CompareTo(Minimum.Priority) < 0)
+            if (Count == 0 ||                                       // Node is first node inserted? Its minimum
+                node.Priority.CompareTo(Minimum.Priority) < 0)      // Node is less than current minimum? Its minimum
                 minimumTreesNode = Trees.First;
 
+            Count++;
             return node;
         }
 
@@ -72,17 +72,17 @@ namespace FibonacciHeap
         /// </summary>
         public void DeleteMin()
         {
-            if (Minimum == null)
+            if (Count == 0)
                 throw new InvalidOperationException("Heap is empty, cannot remove minimum priority item");
 
             // Remove minimum element from list of trees
-            RemoveRoot(minimumTreesNode);
-
-            // Update new minimum value
-            FindMinimum();
+            RemoveMinimum();
 
             // Consolidate trees
             ConsolidateTrees();
+
+            // Update new minimum value
+            FindMinimum();
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace FibonacciHeap
         {
             // If node priority is already less than given priority
             if (node.Priority.CompareTo(priority) < 0)
-                throw new ArgumentException("Priority did not decrease");
+                throw new ArgumentException("Priority is not less than current priority");
 
             // Decrease key of node
             node.Priority = priority;
@@ -148,20 +148,20 @@ namespace FibonacciHeap
         }
 
         /// <summary>
-        /// Removes the node from the list of root trees. Add children to the list of root trees
+        /// Removes the minimum priorirty node from the list of root trees. Adds children to the list of root trees
         /// </summary>
-        private void RemoveRoot(LinkedListNode<HeapNode<TPriority, TItem>> root)
+        private void RemoveMinimum()
         {
-            // Remove from list of trees
-            Trees.Remove(root);
-            Count--;
-
             // Add each child as a root tree, remove ref to parent
-            foreach (HeapNode<TPriority, TItem> child in root.Value.Children)
+            foreach (HeapNode<TPriority, TItem> child in minimumTreesNode.Value.Children)
             {
                 child.Parent = null;
                 Trees.AddFirst(child);
             }
+
+            // Remove minimum from list of trees
+            Trees.Remove(minimumTreesNode);
+            Count--;
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace FibonacciHeap
         private void FindMinimum()
         {
             // If there is atleast one node in heap
-            if (Trees.Count > 0)
+            if (Count > 0)
             {
                 // minimum = first tree in list
                 // walker through remaining nodes to see if there is a smaller one
@@ -200,7 +200,7 @@ namespace FibonacciHeap
         private void ConsolidateTrees()
         {
             // Need atleast 2 trees in order to consolidate
-            if (Trees.Count > 1)
+            if (Count > 1)
             {
                 // Bucket index corresponds to the rank of the stored element
                 Bucket<LinkedListNode<HeapNode<TPriority, TItem>>> rankBucket = new Bucket<LinkedListNode<HeapNode<TPriority, TItem>>>();
