@@ -18,6 +18,11 @@ namespace FibonacciHeap
         /// </summary>
         public HeapNode<TPriority, TItem> Minimum { get { return minimumTreesNode.Value; } }
 
+        /// <summary>
+        /// Number of items in the heap
+        /// </summary>
+        public int Count { get; private set; }
+
         private LinkedListNode<HeapNode<TPriority, TItem>> minimumTreesNode;
 
         /// <summary>
@@ -26,6 +31,7 @@ namespace FibonacciHeap
         public FibonacciHeap()
         {
             Trees = new LinkedList<HeapNode<TPriority, TItem>>();
+            Count = 0;
             minimumTreesNode = null;
         }
 
@@ -51,6 +57,7 @@ namespace FibonacciHeap
             // Add node as first item in root nodes
             HeapNode<TPriority, TItem> node = new HeapNode<TPriority, TItem>(priority, value);
             Trees.AddFirst(node);
+            Count++;
 
             // Update minimum
             if (minimumTreesNode == null || 
@@ -147,6 +154,7 @@ namespace FibonacciHeap
         {
             // Remove from list of trees
             Trees.Remove(root);
+            Count--;
 
             // Add each child as a root tree, remove ref to parent
             foreach (HeapNode<TPriority, TItem> child in root.Value.Children)
