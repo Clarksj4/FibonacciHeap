@@ -1,6 +1,6 @@
 # [Fibonacci Heap](https://en.wikipedia.org/wiki/Fibonacci_heap)
 
-## Dijkstra's shortest path algorithm
+## Understanding Dijkstra's shortest path algorithm
 [Here](https://github.com/Clarksj4/Pathfind) is an example use of this Fibonacci Heap in implementing Dijkstra's shortest path algorithm. [Here](https://github.com/Clarksj4/RPGCampaign/wiki/Dijkstra's-Algorithm) is an explanation of that implementation
 
 ## Overview
