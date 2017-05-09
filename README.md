@@ -39,6 +39,8 @@ Each item inserted into a Fibonacci heap requires an associated priorty. This de
         ...
     }
     
+The insert method returns a HeapNode which contains the item being stored as well as its priority. A reference to the inserted node is necessary should you want to decrease the priority of the node at a later stage
+    
 ### Find Min
 
 The purpose of a priority queue is to always be able to access the item with the smallest priority. This is done by calling the heap's Minimum property
@@ -118,14 +120,16 @@ For convenience, the pop method removes and returns the lowest priority item fro
     
 ### Decrease Priority
 
-It is possible to decrease the priority of a node in the heap. Designed to allow for updating node's cost when pathfinding if a cheaper route has been found.
+It is possible to decrease the priority of a node in the heap. 
+
+Designed to allow for updating node's cost when pathfinding if a cheaper route has been found.
 
     public void DecreasePriorityExample()
     {
         // Create an empty heap.
         FibonacciHeap<int, string> heap = new FibonacciHeap<int, string>();
                 
-        // Insert two items into heap
+        // Insert two items into heap. Insert method returned ref to stored node.
         HeapNode<int, string> node1 = heap.Insert(3, "hello");
         HeapNode<int, string> node2 = heap.Insert(7, "world");
         
