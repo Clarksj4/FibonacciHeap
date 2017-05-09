@@ -12,7 +12,7 @@ findMin          | O(1)        | O(1)
 deleteMin        | O(log n)    | O(log n)
 decreasePriority | O(log n)    | O(1)
 
-Here are some resources to help you understand a Fibonacci heap:
+Here are some resources to help understand a Fibonacci heap:
 - https://www.cs.princeton.edu/~wayne/teaching/fibonacci-heap.pdf
 - https://www.cs.princeton.edu/courses/archive/spring13/cos423/lectures/FibonacciHeaps-2x2.pdf
 
