@@ -120,9 +120,7 @@ For convenience, the pop method removes and returns the lowest priority item fro
     
 ### Decrease Priority
 
-It is possible to decrease the priority of a node in the heap. 
-
-Designed to allow for updating node's cost when pathfinding if a cheaper route has been found.
+It is possible to decrease the priority of a node in the heap. A reference to the node is returned when the associated item is inserted into the heap.
 
     public void DecreasePriorityExample()
     {
