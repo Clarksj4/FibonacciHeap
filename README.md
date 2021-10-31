@@ -1,7 +1,7 @@
 # [Fibonacci Heap](https://en.wikipedia.org/wiki/Fibonacci_heap)
 
 ## Understanding Dijkstra's shortest path algorithm
-[Here](https://github.com/Clarksj4/Pathfind) is an example use of this Fibonacci Heap in implementing Dijkstra's shortest path algorithm. [Here](https://github.com/Clarksj4/RPGCampaign/wiki/Dijkstra's-Algorithm) is an explanation of that implementation
+[Here](https://github.com/Clarksj4/Pathfind) is an example use of this Fibonacci Heap in implementing Dijkstra's shortest path algorithm.
 
 ## Overview
 A Fibonacci heap is an implementation of a priority queue designed with Dijkstra's shortest path algorithm in mind. It provides better time complexity than a binary heap (another implementation of a priority queue) by lazily defering consolidation of its internal tree structure until the deleteMin operation.
